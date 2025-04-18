@@ -17,12 +17,14 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   if (!post) {
     return {
+      metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
       title: "Bài viết không tồn tại",
       description: "Không tìm thấy bài viết này",
     }
   }
 
   return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
     title: post.title,
     description: post.description,
     openGraph: {
@@ -98,21 +100,18 @@ export default async function PostPage({ params }: { params: { slug: string } })
             />
           </div>
 
-          <div className="prose prose-lg max-w-none">
-            <PostContent content={post.content} />
-          </div>
-
-          <ShareButtons title={post.title} slug={post.slug} />
+          <PostContent content={post.content} />
         </div>
 
         <div className="space-y-8">
-          <TableOfContents headings={post.headings} />
-
-          <div className="bg-muted p-6 rounded-lg">
-            <h3 className="text-lg font-bold mb-4">Bài viết liên quan</h3>
-            <RelatedPosts currentSlug={params.slug} tags={post.tags} />
-          </div>
+          <TableOfContents content={post.content} />
+          <ShareButtons title={post.title} url={`/bai-viet/${post.slug}`} />
         </div>
+      </div>
+
+      <div className="mt-16">
+        <h2 className="text-2xl font-bold mb-6">Bài viết liên quan</h2>
+        <RelatedPosts currentSlug={post.slug} tags={post.tags} />
       </div>
     </div>
   )

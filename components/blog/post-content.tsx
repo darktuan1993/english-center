@@ -1,4 +1,4 @@
-import { MDXRemote } from "next-mdx-remote"
+import { MDXRemote } from "next-mdx-remote/rsc"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -24,13 +24,13 @@ const components = {
 }
 
 interface PostContentProps {
-  content: any // This would be the MDX content
+  content: string // This should be the raw MDX content as a string
 }
 
 export default function PostContent({ content }: PostContentProps) {
   return (
     <div className="prose prose-lg max-w-none">
-      <MDXRemote {...content} components={components} />
+      <MDXRemote source={content} components={components} />
     </div>
   )
 }
